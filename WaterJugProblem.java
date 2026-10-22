@@ -1,17 +1,16 @@
 /*
- * ASSIGNMNT :2
- * Name  :Karishma Galande
- * RollNo:3317
- * Title :Implementation of Water Jug Problem.
+ * Water jug problem: two jugs with given capacities, an unlimited water
+ * supply, and a target amount to end up with in one jug (the other empty).
+ * Allowed moves: fill a jug, empty a jug, or pour one jug into the other.
+ * Prints each (jug1,jug2) state from (0,0) to the goal.
  */
 
 import java.util.*;
 public class WaterJugProblem {
 
 	public static void main(String[] args) {
-		// TODO Auto-generated method stub
 		problem p=new problem();
-		Scanner sc=new Scanner(System.in);
+		Scanner sc=p.s;               // share one Scanner so input is not split between two readers
 		int ch;
 		System.out.println("WATER JUG PROBLEM SOLUTION ");
 		System.out.println("======================================");
@@ -32,7 +31,7 @@ public class WaterJugProblem {
 				break;
 				
 			default:
-				System.out.println("Inavlid choice!!");
+				System.out.println("Invalid choice!!");
 			}
 			
 		}while(ch!=2);
@@ -62,8 +61,14 @@ class problem
 		goal1=s.nextInt();
 		System.out.print("Enter goal state 2:");
 		goal2=s.nextInt();
-		if(goal1>m_max || goal2>n_max || (m_max%n_max==0 || n_max%m_max==0) || (m_max%2==0 && n_max%2==0 && (goal1%2==1 ||goal2%2==1))) 
+		int g=gcd(m_max,n_max);
+		if(goal1!=0 && goal2!=0)
 		{
+			System.out.println("\nOne goal must be 0: the target amount ends up in one jug, the other jug empty.");
+		}
+		else if(goal1>m_max || goal2>n_max || (goal1+goal2)%g!=0)
+		{
+			// a target is reachable only if it fits in its jug and is a multiple of gcd(capacities)
 			System.out.println("\nGoal is not reachable");
 		}
 		else
@@ -127,6 +132,10 @@ class problem
 			}
 		}
 	}
+	int gcd(int a,int b)
+	{
+		return b==0 ? a : gcd(b,a%b);
+	}
 	void fillM()
 	{
 		m=m_max;
@@ -180,51 +189,3 @@ class problem
 		System.out.println(m+","+n);
 	}
 }
-
-/*
- * OUTPUT
- * WATER JUG PROBLEM SOLUTION 
-======================================
-
-Menu :
-1.Water-Jug Problem Solution
-2.Exit
-Enter your choice :
-1
-Enter maximum amount of water in first jar:4
-Enter maximum amount of water in second jar:9
-Enter goal state 1:2
-Enter goal state 2:0
-0,0
-4,0
-0,4
-4,4
-0,8
-4,8
-3,9
-3,0
-0,3
-4,3
-0,7
-4,7
-2,9
-2,0
-
-Menu :
-1.Water-Jug Problem Solution
-2.Exit
-Enter your choice :
-1
-Enter maximum amount of water in first jar:20
-Enter maximum amount of water in second jar:10
-Enter goal state 1:5
-Enter goal state 2:0
-
-Goal is not reachable
-
-Menu :
-1.Water-Jug Problem Solution
-2.Exit
-Enter your choice :
-
-*/
